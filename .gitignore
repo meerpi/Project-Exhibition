@@ -1,0 +1,22 @@
+# Hand sign data — generated landmark CSVs
+data/
+
+# Trained model artifacts
+models/*.joblib
+models/*.png
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+
+# Virtual environment
+.venv/
+
+# IDE
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db
