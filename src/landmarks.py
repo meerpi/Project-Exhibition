@@ -1,5 +1,5 @@
 # hand landmark extraction with mediapipe
-# single hand detection for now
+# now with wrist centering and scale normalization
 
 import sys
 from pathlib import Path
@@ -18,7 +18,13 @@ import mediapipe as mp
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
-from configs.config import MEDIAPIPE_MODEL_PATH, NUM_LANDMARKS, LANDMARK_DIM
+from configs.config import (
+    MEDIAPIPE_MODEL_PATH,
+    NUM_LANDMARKS,
+    LANDMARK_DIM,
+    WRIST_IDX,
+    SCALE_REF_IDX,
+)
 
 
 class HandLandmarkExtractor:
@@ -43,7 +49,7 @@ class HandLandmarkExtractor:
         self._landmarker = HandLandmarker.create_from_options(options)
 
     def extract(self, bgr_frame):
-        """single hand raw 63-dim vector"""
+        """single hand 63-dim vector for fingerspelling"""
         rgb_frame = bgr_frame[:, :, ::-1].copy()
         mp_image = mp.Image(image_format=mp.ImageFormat.SRGB, data=rgb_frame)
 
@@ -56,11 +62,7 @@ class HandLandmarkExtractor:
         if len(hand) != NUM_LANDMARKS:
             return None
 
-        raw = np.array(
-            [[lm.x, lm.y, lm.z] for lm in hand],
-            dtype=np.float32,
-        )
-        return raw.flatten()
+        return _normalize_landmarks(hand)
 
     def close(self):
         self._landmarker.close()
@@ -70,3 +72,23 @@ class HandLandmarkExtractor:
 
     def __exit__(self, *args):
         self.close()
+
+
+def _normalize_landmarks(hand_landmarks):
+    """wrist-center + scale by wrist-to-MCP9 distance"""
+    raw = np.array(
+        [[lm.x, lm.y, lm.z] for lm in hand_landmarks],
+        dtype=np.float32,
+    )
+
+    wrist = raw[WRIST_IDX]
+    centered = raw - wrist
+
+    scale_ref = centered[SCALE_REF_IDX]
+    scale_dist = np.linalg.norm(scale_ref)
+
+    if scale_dist < 1e-6:
+        return None
+
+    normalized = centered / scale_dist
+    return normalized.flatten()
