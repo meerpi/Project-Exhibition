@@ -192,6 +192,8 @@ def run_demo(camera_index=CAMERA_INDEX):
 
         has_two_hands = np.any(landmarks_multi[63:] != 0)
         is_word_mode = (active_mode == "WORDS") or (active_mode == "AUTO" and has_two_hands)
+        if active_mode == "AUTO":
+            current_pred_type = "WORD (Auto)" if is_word_mode else "LETTER (Auto)"
 
         if is_word_mode and word_model is not None and len(frame_buffer) == SEQUENCE_LENGTH:
             current_pred_type = "WORD"
