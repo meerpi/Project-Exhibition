@@ -4,6 +4,7 @@
 # keys: M=mode, S=speak, SPACE/BACKSPACE/C=text editing, Q=quit
 
 import argparse
+import time
 import sys
 import time
 from collections import deque
@@ -254,6 +255,8 @@ def run_demo(camera_index=CAMERA_INDEX):
         # bottom bar - sentence
         cv2.rectangle(display, (0, h - 60), (w, h), (15, 15, 15), -1)
         sentence_text = builder.sentence if builder.sentence else "(sign to build text)"
+        if builder.sentence and int(time.time() * 2) % 2 == 0:
+            sentence_text += "_"
         text_color = (255, 255, 255) if builder.sentence else (120, 120, 120)
         cv2.putText(display, sentence_text, (20, h - 20),
                     cv2.FONT_HERSHEY_SIMPLEX, 0.8, text_color, 2)
