@@ -109,6 +109,10 @@ class TTSEngine:
             import pyttsx3
             self._engine = pyttsx3.init()
             self._engine.setProperty("rate", 150)
+            self._engine.setProperty("volume", 0.9)
+            voices = self._engine.getProperty("voices")
+            if len(voices) > 1:
+                self._engine.setProperty("voice", voices[1].id) # use female voice if available
             print("  TTS ready (pyttsx3)")
         except Exception:
             print("  TTS not available - will print to console instead")
