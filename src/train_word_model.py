@@ -358,3 +358,17 @@ def main():
 
 if __name__ == "__main__":
     main()
+
+def plot_confusion_matrix(y_true, y_pred, classes, filename="confusion_matrix.png"):
+    import matplotlib.pyplot as plt
+    import seaborn as sns
+    from sklearn.metrics import confusion_matrix
+    cm = confusion_matrix(y_true, y_pred)
+    plt.figure(figsize=(10, 8))
+    sns.heatmap(cm, annot=True, fmt="d", cmap="Blues", xticklabels=classes, yticklabels=classes)
+    plt.ylabel('True Label')
+    plt.xlabel('Predicted Label')
+    plt.title('Word Model Confusion Matrix')
+    plt.tight_layout()
+    plt.savefig(filename)
+    print(f"Saved confusion matrix to {filename}")
