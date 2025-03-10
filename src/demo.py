@@ -236,15 +236,15 @@ def run_demo(camera_index=CAMERA_INDEX):
         h, w = display.shape[:2]
 
         # top bar
-        cv2.rectangle(display, (0, 0), (w, 90), (20, 20, 20), -1)
+        cv2.rectangle(display, (0, 0), (w, 90), (35, 35, 40), -1)
 
         cv2.putText(display, f"Mode: {active_mode}", (20, 35),
-                    cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0, 200, 255), 2)
+                    cv2.FONT_HERSHEY_SIMPLEX, 0.7, (100, 220, 255), 2)
         cv2.putText(display, f"Type: {current_pred_type}", (20, 65),
                     cv2.FONT_HERSHEY_SIMPLEX, 0.6, (180, 180, 180), 1)
 
         if current_pred_text:
-            color = (0, 255, 0) if current_pred_type == "LETTER" else (255, 200, 0)
+            color = (0, 255, 0) if current_pred_type == "LETTER" else (255, 150, 50)
             cv2.putText(display, current_pred_text, (w // 2 - 40, 65),
                         cv2.FONT_HERSHEY_SIMPLEX, 2.0, color, 4)
         else:
@@ -257,7 +257,7 @@ def run_demo(camera_index=CAMERA_INDEX):
                     cv2.FONT_HERSHEY_SIMPLEX, 0.6, (0, 200, 200), 1)
 
         # bottom bar - sentence
-        cv2.rectangle(display, (0, h - 60), (w, h), (15, 15, 15), -1)
+        cv2.rectangle(display, (0, h - 60), (w, h), (25, 25, 30), -1)
         sentence_text = builder.sentence if builder.sentence else "(sign to build text)"
         if builder.sentence and int(time.time() * 2) % 2 == 0:
             sentence_text += "_"
