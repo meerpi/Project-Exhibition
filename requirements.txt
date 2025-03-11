@@ -1,5 +1,16 @@
-mediapipe
-opencv-python-headless
-numpy
-scikit-learn
-matplotlib
+# Hand Sign Recognition — Pinned Dependencies
+# Fixes audit finding H6 (no pinned versions)
+#
+# Install: pip install -r requirements.txt
+# Or with uv: uv pip install -r requirements.txt
+
+mediapipe==1.0.0
+opencv-python-headless>=5.0.0
+numpy>=2.0.0
+scikit-learn>=1.9.0
+matplotlib>=3.11.0
+joblib>=1.5.0
+torch>=2.0.0
+torchvision>=0.15.0
+pandas>=2.0.0
+pyarrow>=14.0.0
